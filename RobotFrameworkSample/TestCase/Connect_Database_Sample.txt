@@ -1,0 +1,17 @@
+*** Settings ***
+Resource          ../Resource/Lib/Lib_DatabaseAdapter.html
+
+*** Test Cases ***
+Use sqlite3 to query Taiwan_City
+    Connect To Database Using Custom Params    sqlite3    database="./Resource/VariableFile/Taiwan.db", isolation_level=None
+    ${output1}    Query    select * from Taiwan_City
+    ${cnt1}    Row Count    select * from Taiwan_City
+    log    ${output1}
+    log    ${cnt1}
+    ${output2}    Query    select * from Taiwan_City where city_code = 63
+    ${cnt2}    Row Count    select * from Taiwan_City where city_code = 63
+    log    ${output2}
+    log    ${cnt2}
+    log    ${output2[0][2]}
+    Should Be Equal As Strings    ${output2[0][2]}    Taipei City
+    [Teardown]    Disconnect From Database
